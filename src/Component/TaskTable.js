@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Edit from "./Edit";
+import useGetTaskFromDb from "../helper/useGetTaskFromDb";
 
 const TaskTable = () => {
+  useEffect(()=>{
+    useGetTaskFromDb()
+  },[])
   const [isClick,setClick]=useState(false)
   const handelUpdate=()=>{
     setClick(true)
