@@ -31,7 +31,6 @@ const TaskTable = () => {
               <td className="border border-slate-700 w-[13%]">css</td>
               <td className="border border-slate-700 text-left">
                 Css is for styling the raw HTML page
-                lkxnbdsjvxskhl;baldbcodvusoLNclxdacsevdrbftgnyhgftderaewfargthyjt
               </td>
               <td className="border border-slate-700 w-[13%]">10-07-2023</td>
               <td className="border border-slate-700 w-[13%]">
