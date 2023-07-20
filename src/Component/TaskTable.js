@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
-import Edit from "./Edit";
-import useGetTaskFromDb from "../helper/useGetTaskFromDb";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const TaskTable = () => {
-  useEffect(()=>{
-    useGetTaskFromDb()
-  },[])
-  const [isClick,setClick]=useState(false)
-  const handelUpdate=()=>{
-    setClick(true)
-  }
-  const handleCancel=()=>{
-    setClick(false)
-  }
+  const [param, getParam] = useState("");
+  const navigate=useNavigate()
+
+  const AllTask = useSelector((store) => store.Task);
+  console.log(AllTask);
+
+  const handelUpdate = (id) => {
+    getParam(id);
+    navigate(`/task/edit/${id}`)
+  };
+  const handleEditStatus = (id) => {
+    getParam(id);
+    navigate(`/task/editstatus/${id}`)
+  };
+  const handleDelete = (id) => {
+    getParam(id);
+    navigate(`/task/${id}`)
+  };
+
   return (
     <div className="container mx-auto w-2/3">
       <div className="overflow-x-auto">
@@ -27,52 +36,62 @@ const TaskTable = () => {
             </tr>
           </thead>
           <tbody className="bg-blue-50 text-center">
-            <tr>
-              <td className="border border-slate-700 w-[13%]">css</td>
-              <td className="border border-slate-700 text-left">
-                Css is for styling the raw HTML page
-              </td>
-              <td className="border border-slate-700 w-[13%]">10-07-2023</td>
-              <td className="border border-slate-700 w-[13%]">
-                <span>
-                  <i className="fa-solid px-2 text-green-600 fa-circle-check"></i>
-                  completed
-                </span>
-              </td>
-              <td className="border border-slate-700 w-[13%]">
-                <button onClick={handelUpdate}>
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button className="bg-red px-2">
-                  <i className="text-red-600 fa-solid fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td className="border border-slate-700 w-[13%]">css</td>
-              <td className="border border-slate-700 text-left">
-                Css is for styling the raw HTML page
-                lkxnbdsjvxskhl;baldbcodvusoLNclxdacsevdrbftgnyhgftderaewfargthyjt
-              </td>
-              <td className="border border-slate-700 w-[13%]">10-07-2023</td>
-              <td className="border border-slate-700 w-[13%]">
-                <span>
-                  <i className="fa-solid px-2 text-green-600 fa-circle-check"></i>
-                  completed
-                </span>
-              </td>
-              <td className="border border-slate-700 w-[13%]">
-                <button onClick={handelUpdate}>
-                  <i className="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button className="bg-red px-2">
-                  <i className="text-red-600 fa-solid fa-trash"></i>
-                </button>
-              </td>
-            </tr>
+            {AllTask.length > 0 ? (
+              AllTask.map((data) => {
+                let status,bgCol;
+                if(data.isCompleted){
+                  status="Completed";
+                  bgCol="rgb(34 197 94)"
+                }
+                else if(data.isInprogress){
+                  status="In progress"
+                  bgCol=" rgb(234 179 8 )"
+                }
+                else{
+                    status="Yet to do"
+                    bgCol="rgb(239 68 68)"
+                }
+
+                return (
+                  <React.Fragment key={data._id}>
+                    <tr key={data._id} className="h-10">
+                      <td className="border border-slate-700 w-[13%]">
+                        {data?.title}
+                      </td>
+                      <td className="border border-slate-700 text-left">
+                        {data?.description}
+                      </td>
+                      <td className="border border-slate-700 w-[13%]">
+                        {data?.dueDate}
+                      </td>
+                      <td className="border border-slate-700 w-[15%]">
+                        <button onClick={()=>handleEditStatus(data._id)} style={{backgroundColor:`${bgCol}`}} className="text-white font-bold  text-sm my-auto py-1 px-1 rounded">
+                          {status}
+                        </button>
+                      </td>
+                      <td className="border border-slate-700 w-[13%]">
+                        <button onClick={()=>handelUpdate(data._id)}>
+                          <i className="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button
+                          onClick={() => handleDelete(data._id)}
+                          className="bg-red px-2"
+                        >
+                          <i className="text-red-600 fa-solid fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })
+            ) : (
+              <tr>
+                <td>No record found ?</td>
+              </tr>
+            )}
           </tbody>
         </table>
-        {isClick && <Edit onCancel={handleCancel}/>}
+    
       </div>
     </div>
   );

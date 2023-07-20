@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import AddNewTAsk from "./AddNewTAsk";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
     const [isClick,setClick]=useState(false)
+    const navigate=useNavigate()
     function handleCreate() {
         setClick(prevState => !prevState);
-      }
-    function handleCancel() {
-        setClick(false);
+        console.log("hi")
+        navigate("/addtask")
       }
   return (
     <>
@@ -20,14 +21,12 @@ const Header = () => {
         </h1>
         <button onClick={()=>{handleCreate()}} className=" bg-white border-2 text-sky-600 border-sky-950 md:py-2 md:px-3 p-1 rounded-md font-bold shadow-lg">
           <span className="pr-1 font-bold">
-            <i class="fa-solid fa-plus"></i>
+            <i className="fa-solid fa-plus"></i>
           </span>
           Create task
         </button>
       </div>
-      {
-        isClick&&<AddNewTAsk onCancel={handleCancel}/>
-      }
+     
 
     </>
   );

@@ -1,22 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-const taskData={
-    title:"",
-    description:"",
-    dueDate:"",
-    isCompleted:false,
-    isInprogress:false,
-    isYettoDo:true,
-}
 const taskSlice=createSlice({
     name:"Task",
-    initialState:[taskData],
+    initialState:[],
     reducers:{
-        addTask:(state,action)=>[
-            state.push(action.payload)
-        ]
+        setTask:(state, action) => {
+            return action.payload; // This will replace the existing data in the store with the fetched data
+          }
     }
 })
 
 
-export const {addTask}=taskSlice.actions;
+export const {setTask}=taskSlice.actions;
 export default taskSlice.reducer;
